@@ -1,0 +1,11 @@
+{
+    "house":[
+        {
+            "Name":"dilbar",
+            "Owners name" : "surendar",
+            "Address"  : "new vihar delhi",
+            "Area code" : 102,
+            "rent" : 3000
+        }
+    ]
+}

@@ -1,45 +1,41 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
-
+import "./App.css";
+import { Rentals } from "./Components/Rentals/Rentals";
+import { AddHouse } from "./Components/AddHouse/AddHouse";
+import { useEffect, useState } from "react";
+import axios from "axios"
 function App() {
-  const [count, setCount] = useState(0)
+  const [hose, setHouse] = useState([])
+  const [text,setText] = useState(" ")
+  useEffect(() => {
+    gethouse()
+  }, []);
 
+  const gethouse = () => {
+    axios.get(`http://localhost:8080/house`).then((res) => {
+      setHouse(res.data)
+    })
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <AddHouse></AddHouse>
+      <button className="toggleForm" onClick={() => {
+        fetch(`http://localhost:8080/house`, {
+          method: "POST",
+          body: JSON.stringify({ title: text, purchased: false }),
+          headers: {
+            "Content-Type":"application/json"
+          },
+        }).then(() => {
+          gethouse()
+        })
+      }} >
+        Addhouse
+      </button>
+      {/* Show component based on state */}
+      <br />
+      <Rentals></Rentals>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
